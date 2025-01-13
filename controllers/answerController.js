@@ -7,6 +7,10 @@ const getAnswerById = (req, res) => {
   res.send(answer);
 };
 
+const getAllAnswers = (req, res) => {
+  res.send(answers);
+};
+
 const postAnswerById = (req, res) => {
   const answer = answers.find((a) => a.id === parseInt(req.params.id));
   if (!answer)
@@ -19,4 +23,5 @@ const postAnswerById = (req, res) => {
 module.exports = {
   getAnswerById,
   postAnswerById,
+  getAllAnswers,
 };
