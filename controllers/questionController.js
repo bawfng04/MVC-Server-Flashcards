@@ -1,37 +1,73 @@
-const questions = require("../models/questionModel");
+const QuestionModel = require("../models/questionModel");
 
-const getAllQuestions = (req, res) => {
-  res.send(questions);
+const getAllQuestions = async (req, res) => {
+  try {
+    const questions = await QuestionModel.getAllQuestions();
+    res.json(questions);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching questions", error: error.message });
+  }
 };
 
-const getQuestionById = (req, res) => {
-  const selectedQuestion = questions.find(
-    (question) => question.id === req.params.id
-  );
-  if (!selectedQuestion) {
-    return res
-      .status(404)
-      .send("The question with the given ID was not found.");
+const getQuestionById = async (req, res) => {
+  try {
+    const question = await QuestionModel.getQuestionById(req.params.id);
+    if (!question) {
+      return res.status(404).json({ message: "Question not found" });
+    }
+    res.json(question);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching question", error: error.message });
   }
-  res.send(selectedQuestion);
 };
 
-const deleteQuestionById = (req, res) => {
-  const selectedQuestion = questions.find(
-    (question) => question.id === req.params.id
-  );
-  if (!selectedQuestion) {
-    return res
-      .status(404)
-      .send("The question with the given ID was not found.");
+const deleteQuestionById = async (req, res) => {
+  try {
+    const result = await QuestionModel.deleteQuestion(req.params.id);
+    if (!result) {
+      return res.status(404).json({ message: "Question not found" });
+    }
+    res.json({ message: "Question deleted successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error deleting question", error: error.message });
   }
-  const index = questions.indexOf(selectedQuestion);
-  questions.splice(index, 1);
-  res.send(selectedQuestion);
+};
+
+const createQuestion = async (req, res) => {
+  try {
+    const newQuestion = await QuestionModel.createQuestion(req.body);
+    res.status(201).json(newQuestion);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error creating question", error: error.message });
+  }
+};
+
+const updateQuestion = async (req, res) => {
+  try {
+    const updated = await QuestionModel.updateQuestion(req.params.id, req.body);
+    if (!updated) {
+      return res.status(404).json({ message: "Question not found" });
+    }
+    res.json(updated);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error updating question", error: error.message });
+  }
 };
 
 module.exports = {
   getAllQuestions,
   getQuestionById,
   deleteQuestionById,
+  createQuestion,
+  updateQuestion,
 };

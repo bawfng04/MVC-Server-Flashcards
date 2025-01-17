@@ -1,39 +1,21 @@
-const questions = [
-  {
-    id: 1,
-    question: "What is the capital of France?",
-    options: ["New York", "London", "Paris", "Dublin"],
-    answer: "Paris",
-  },
-  {
-    id: 2,
-    question: "What is the capital of England?",
-    options: ["New York", "London", "Paris", "Dublin"],
-    answer: "London",
-  },
-  {
-    id: 3,
-    question: "What is the highest mountain in the world?",
-    options: ["K2", "Kangchenjunga", "Mount Everest", "Lhotse"],
-    answer: "Mount Everest",
-  },
-  {
-    id: 4,
-    question: "What is the largest ocean in the world?",
-    options: [
-      "Atlantic Ocean",
-      "Indian Ocean",
-      "Arctic Ocean",
-      "Pacific Ocean",
-    ],
-    answer: "Pacific Ocean",
-  },
-  {
-    id: 5,
-    question: "What is the smallest country in the world?",
-    options: ["Monaco", "Nauru", "Vatican City", "Tuvalu"],
-    answer: "Vatican City",
-  },
-];
+// models/questionModel.js
+const { poolPromise, sql } = require("../database/database");
 
-module.exports = questions;
+class QuestionModel {
+  async getAllQuestions() {
+    const pool = await poolPromise;
+    const result = await pool.request().query("SELECT * FROM questions");
+    return result.recordset;
+  }
+
+  async getQuestionById(id) {
+    const pool = await poolPromise;
+    const result = await pool
+      .request()
+      .input("id", sql.Int, id)
+      .query("SELECT * FROM questions WHERE id = @id");
+    return result.recordset[0];
+  }
+}
+
+module.exports = new QuestionModel();
