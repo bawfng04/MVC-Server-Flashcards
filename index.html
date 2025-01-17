@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashcards</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    #flashcards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .flashcard {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+
+    .flashcard:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+
+    .question {
+      font-size: 1.3em;
+      color: #2c3e50;
+      margin-bottom: 20px;
+      font-weight: 600;
+      border-bottom: 2px solid #e0e0e0;
+      padding-bottom: 15px;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .option {
+      padding: 12px 15px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      border: 2px solid #e9ecef;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .option:hover {
+      background: #e9ecef;
+      transform: translateX(5px);
+    }
+
+    .answer {
+      color: #2196F3;
+      font-weight: 600;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 10px;
+      background: #e3f2fd;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+    }
+
+    .flashcard.show-answer .answer {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .flashcard {
+      animation: fadeIn 0.5s ease forwards;
+    }
+  </style>
+</head>
+<body>
+  <h1>Flashcards</h1>
+  <div id="flashcards"></div>
+
+  <script>
+    async function fetchFlashcards() {
+      try {
+        const response = await fetch('http://localhost:5000/flashcards');
+        const flashcards = await response.json();
+        displayFlashcards(flashcards);
+      } catch (error) {
+        console.error('Error fetching flashcards:', error);
+      }
+    }
+
+    function displayFlashcards(flashcards) {
+      const flashcardsContainer = document.getElementById('flashcards');
+      flashcardsContainer.innerHTML = '';
+
+      flashcards.forEach((flashcard, index) => {
+        // console.log("---- flashcard: ", flashcard, index);
+        const flashcardElement = document.createElement('div');
+        flashcardElement.className = 'flashcard';
+        flashcardElement.style.animationDelay = `${index * 0.1}s`;
+
+        const questionElement = document.createElement('div');
+        questionElement.className = 'question';
+        questionElement.textContent = flashcard.question;
+
+        const optionsElement = document.createElement('div');
+        optionsElement.className = 'options';
+        const options = JSON.parse(flashcard.options);
+
+        options.forEach(option => {
+            // console.log("option:", option)
+        const optionElement = document.createElement('div');
+        optionElement.className = 'option';
+        optionElement.textContent = option;
+        optionElement.addEventListener('click', () => {
+            // Trim and compare case-insensitive
+            if (option.trim().toLowerCase() === flashcard.correctAnswer.trim().toLowerCase()) {
+            optionElement.style.background = '#c8e6c9';
+            optionElement.style.borderColor = '#81c784';
+            } else {
+            optionElement.style.background = '#ffcdd2';
+            optionElement.style.borderColor = '#e57373';
+            }
+        });
+        optionsElement.appendChild(optionElement);
+        });
+
+        const answerElement = document.createElement('div');
+        answerElement.className = 'answer';
+        answerElement.textContent = `Answer: ${flashcard.answer}`;
+
+        flashcardElement.appendChild(questionElement);
+        flashcardElement.appendChild(optionsElement);
+        flashcardElement.appendChild(answerElement);
+
+        flashcardElement.addEventListener('click', () => {
+          flashcardElement.classList.toggle('show-answer');
+        });
+
+        flashcardsContainer.appendChild(flashcardElement);
+      });
+    }
+
+    fetchFlashcards();
+  </script>
+</body>
+</html>
