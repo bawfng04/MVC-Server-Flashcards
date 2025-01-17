@@ -39,7 +39,7 @@ This is a simple Node.js server using the MVC (Model-View-Controller) architectu
 ## Running the Server
 
 To start the server, run:
-    ```sh
+    ```
     npm start
     ```
 
