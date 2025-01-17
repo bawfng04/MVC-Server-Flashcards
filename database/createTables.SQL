@@ -1,4 +1,3 @@
-
 CREATE TABLE questions (
   id INT IDENTITY(1,1) PRIMARY KEY,
   question VARCHAR(255) NOT NULL,
@@ -8,8 +7,10 @@ CREATE TABLE questions (
 
 CREATE TABLE answers (
   id INT IDENTITY(1,1) PRIMARY KEY,
+  question_id INT NOT NULL,
   correct BIT NOT NULL,
-  explanation TEXT NOT NULL
+  explanation TEXT NOT NULL,
+  FOREIGN KEY (question_id) REFERENCES questions(id)
 );
 
 -- Insert more questions and answers, replacing some similar ones
@@ -53,43 +54,43 @@ INSERT INTO questions (question, options, answer) VALUES
 ('What is the name of the smallest bone in the human body?', '["Stapes", "Malleus", "Incus", "Hyoid"]', 'Stapes'),
 ('What is the name of the planet known as the "Red Planet"?', '["Venus", "Mars", "Jupiter", "Saturn"]', 'Mars');
 
-
-INSERT INTO answers (correct, explanation) VALUES
-(1, 'Paris is the capital city of France.'),
-(1, 'London is the capital city of England.'),
-(1, 'Mount Everest is the highest mountain above sea level in the world.'),
-(1, 'The Pacific Ocean is the largest ocean on Earth by surface area.'),
-(1, 'Vatican City is generally considered the smallest country in the world by land area.'),
-(1, 'Vincent van Gogh painted the famous post-impressionist painting, "The Starry Night."'),
-(1, 'Au is the chemical symbol for gold on the periodic table.'),
-(1, 'Ag is the chemical symbol for silver on the periodic table.'),
-(1, 'Fe is the chemical symbol for iron on the periodic table.'),
-(1, 'Hg is the chemical symbol for mercury on the periodic table.'),
-(1, 'The Moon is Earth’s only natural satellite.'),
-(1, 'The Milky Way is the name of our galaxy.'),
-(1, 'The formula for the area of a circle is πr², where r is the radius.'),
-(1, 'The formula for the area of a triangle is 1/2 * base * height.'),
-(1, 'The Pythagorean theorem states that in a right-angled triangle, the square of the hypotenuse (the side opposite the right angle) is equal to the sum of the squares of the other two sides (a² + b² = c²).'),
-(1, 'At sea level, water boils at 100 degrees Celsius (212 degrees Fahrenheit).'),
-(1, 'At sea level, water freezes at 0 degrees Celsius (32 degrees Fahrenheit).'),
-(1, 'The speed of light in a vacuum is approximately 299,792,458 meters per second.'),
-(1, 'World War II officially ended in 1945.'),
-(1, 'World War I officially ended in 1918.'),
-(1, 'The RMS Titanic sank in 1912.'),
-(1, 'Alexander Graham Bell is credited with inventing the telephone.'),
-(1, 'Canberra is the capital city of Australia.'),
-(1, 'The Antarctic Desert is considered the largest desert in the world by area.'),
-(1, 'The Amazon rainforest is the largest rainforest in the world by area.'),
-(1, 'Jane Austen wrote the classic novel "Pride and Prejudice."'),
-(1, 'George Orwell wrote the dystopian novel "1984."'),
-(1, 'The Nile River is generally considered the longest river in the world.'),
-(1, 'The Caspian Sea is the largest lake in the world by area.'),
-(1, 'The Yen is the official currency of Japan.'),
-(1, 'The Burj Khalifa is currently the tallest building in the world.'),
-(1, 'Ganymede is the largest moon of Jupiter.'),
-(1, 'CO2 is the chemical symbol for carbon dioxide.'),
-(1, 'Photosynthesis is the process by which green plants and some other organisms use sunlight to synthesize foods from carbon dioxide and water.'),
-(1, 'Gravity is the force that attracts a body towards the center of the earth, or towards any other physical body having mass.'),
-(1, 'The femur is the largest bone in the human body.'),
-(1, 'The stapes is the smallest bone in the human body.'),
-(1, 'Mars is often called the "Red Planet" because of its reddish appearance due to iron oxide on its surface.');
+-- Insert answers with question_id
+INSERT INTO answers (question_id, correct, explanation) VALUES
+(1, 1, 'Paris is the capital city of France.'),
+(2, 1, 'London is the capital city of England.'),
+(3, 1, 'Mount Everest is the highest mountain above sea level in the world.'),
+(4, 1, 'The Pacific Ocean is the largest ocean on Earth by surface area.'),
+(5, 1, 'Vatican City is generally considered the smallest country in the world by land area.'),
+(6, 1, 'Vincent van Gogh painted the famous post-impressionist painting, "The Starry Night."'),
+(7, 1, 'Au is the chemical symbol for gold on the periodic table.'),
+(8, 1, 'Ag is the chemical symbol for silver on the periodic table.'),
+(9, 1, 'Fe is the chemical symbol for iron on the periodic table.'),
+(10, 1, 'Hg is the chemical symbol for mercury on the periodic table.'),
+(11, 1, 'The Moon is Earth’s only natural satellite.'),
+(12, 1, 'The Milky Way is the name of our galaxy.'),
+(13, 1, 'The formula for the area of a circle is πr², where r is the radius.'),
+(14, 1, 'The formula for the area of a triangle is 1/2 * base * height.'),
+(15, 1, 'The Pythagorean theorem states that in a right-angled triangle, the square of the hypotenuse (the side opposite the right angle) is equal to the sum of the squares of the other two sides (a² + b² = c²).'),
+(16, 1, 'At sea level, water boils at 100 degrees Celsius (212 degrees Fahrenheit).'),
+(17, 1, 'At sea level, water freezes at 0 degrees Celsius (32 degrees Fahrenheit).'),
+(18, 1, 'The speed of light in a vacuum is approximately 299,792,458 meters per second.'),
+(19, 1, 'World War II officially ended in 1945.'),
+(20, 1, 'World War I officially ended in 1918.'),
+(21, 1, 'The RMS Titanic sank in 1912.'),
+(22, 1, 'Alexander Graham Bell is credited with inventing the telephone.'),
+(23, 1, 'Canberra is the capital city of Australia.'),
+(24, 1, 'The Antarctic Desert is considered the largest desert in the world by area.'),
+(25, 1, 'The Amazon rainforest is the largest rainforest in the world by area.'),
+(26, 1, 'Jane Austen wrote the classic novel "Pride and Prejudice."'),
+(27, 1, 'George Orwell wrote the dystopian novel "1984."'),
+(28, 1, 'The Nile River is generally considered the longest river in the world.'),
+(29, 1, 'The Caspian Sea is the largest lake in the world by area.'),
+(30, 1, 'The Yen is the official currency of Japan.'),
+(31, 1, 'The Burj Khalifa is currently the tallest building in the world.'),
+(32, 1, 'Ganymede is the largest moon of Jupiter.'),
+(33, 1, 'CO2 is the chemical symbol for carbon dioxide.'),
+(34, 1, 'Photosynthesis is the process by which green plants and some other organisms use sunlight to synthesize foods from carbon dioxide and water.'),
+(35, 1, 'Gravity is the force that attracts a body towards the center of the earth, or towards any other physical body having mass.'),
+(36, 1, 'The femur is the largest bone in the human body.'),
+(37, 1, 'The stapes is the smallest bone in the human body.'),
+(38, 1, 'Mars is often called the "Red Planet" because of its reddish appearance due to iron oxide on its surface.');
