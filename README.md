@@ -2,6 +2,9 @@
 
 This is a simple Node.js server using the MVC (Model-View-Controller) architecture.
 
+## Screenshot
+![screenshot](image.png)
+
 ## Prerequisites
 
 - Node.js
