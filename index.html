@@ -91,6 +91,25 @@
       transition: all 0.3s ease;
     }
 
+    .search-input {
+      width: 100%;
+      padding: 15px 20px;
+      font-size: 1.1em;
+      border: 2px solid #e0e0e0;
+      border-radius: 15px;
+      background: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #2196F3;
+      box-shadow: 0 5px 20px rgba(33,150,243,0.2);
+    }
+
+
     .flashcard.show-answer .answer {
       opacity: 1;
       transform: translateY(0);
@@ -114,17 +133,31 @@
 </head>
 <body>
   <h1>Flashcards</h1>
+    <div class="search-container">
+    <input type="text" class="search-input" placeholder="Search flashcards..." id="searchInput">
+  </div>
   <div id="flashcards"></div>
 
+
   <script>
+     let allFlashcards = [];
+
+
     async function fetchFlashcards() {
       try {
         const response = await fetch('http://localhost:5000/flashcards');
-        const flashcards = await response.json();
-        displayFlashcards(flashcards);
+        allFlashcards = await response.json();
+        displayFlashcards(allFlashcards);
       } catch (error) {
         console.error('Error fetching flashcards:', error);
       }
+    }
+
+    function filterFlashcards(searchTerm) {
+      const filtered = allFlashcards.filter(flashcard =>
+        flashcard.question.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      displayFlashcards(filtered);
     }
 
     function displayFlashcards(flashcards) {
@@ -178,6 +211,10 @@
         flashcardsContainer.appendChild(flashcardElement);
       });
     }
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      filterFlashcards(e.target.value);
+    });
 
     fetchFlashcards();
   </script>
