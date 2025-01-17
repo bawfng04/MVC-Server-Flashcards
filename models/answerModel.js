@@ -1,6 +1,20 @@
-const answers = [
-  { id: 1, correct: true, explanation: "The correct answer is A because..." },
-  { id: 2, correct: false, explanation: "The correct answer is B because..." },
-];
+const { pool } = require("mssql");
+const { poolPromise, sql } = require("../database/database");
 
-module.exports = answers;
+class AnswerModel {
+  async getAllAnswers() {
+    const pool = await poolPromise;
+    const query = "SELECT * FROM ANSWERS";
+    const result = await pool.request().query(query);
+    return result.recordset;
+  }
+
+  async getAnswerById(id) {
+    const pool = await poolPromise;
+    const query = "SELECT * FROM answers WHERE id = @id";
+    const result = await pool.request().input("id", sql.Int, id).query(query);
+    return result.recordset[0];
+  }
+}
+
+module.exports = new AnswerModel();

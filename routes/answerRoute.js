@@ -2,13 +2,11 @@
 const express = require("express");
 const router = express.Router();
 const {
-  getAnswerById,
-  postAnswerById,
   getAllAnswers,
+  getAnswerById,
 } = require("../controllers/answerController");
 
 router.get("/answers", getAllAnswers);
 router.get("/answers/:id", getAnswerById);
-router.post("/answers/:id", postAnswerById);
 
 module.exports = router;
