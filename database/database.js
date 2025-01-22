@@ -3,7 +3,8 @@ require("dotenv").config();
 const IP_ADDRESS = process.env.IP_ADDRESS || "localhost";
 
 const config = {
-  server: "NPM-SASS",
+  server: IP_ADDRESS || "NPM-SASS",
+
   database: process.env.DB_NAME,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -14,6 +15,12 @@ const config = {
     charset: "UTF-8",
   },
 };
+
+if (IP_ADDRESS) {
+  console.log("connected to database via IP address");
+} else {
+  console.log("connected to database via localhost");
+}
 
 const poolPromise = new sql.ConnectionPool(config)
   .connect()
