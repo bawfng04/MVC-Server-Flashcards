@@ -141,11 +141,13 @@
 
   <script>
      let allFlashcards = [];
+    //  let APIEndpoint = 'https://flashcardserver-617sw4sjj-bawfng04s-projects.vercel.app'
+    APIEndpoint = 'http://localhost:5000/'
 
 
     async function fetchFlashcards() {
       try {
-        const response = await fetch('http://localhost:5000/flashcards');
+        const response = await fetch(`${APIEndpoint}flashcards`);
         allFlashcards = await response.json();
         displayFlashcards(allFlashcards);
       } catch (error) {

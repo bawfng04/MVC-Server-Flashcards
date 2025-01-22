@@ -1,5 +1,6 @@
 const sql = require("mssql");
 require("dotenv").config();
+const IP_ADDRESS = process.env.IP_ADDRESS || "localhost";
 
 const config = {
   server: "NPM-SASS",
@@ -20,6 +21,9 @@ const poolPromise = new sql.ConnectionPool(config)
     console.log("Connected to SQL Server successfully!");
     return pool;
   })
-  .catch((err) => console.error("SQL Server connection failed!", err));
+  .catch((err) => {
+    console.error("SQL Server connection failed!", err);
+    throw err;
+  });
 
 module.exports = { sql, poolPromise };
