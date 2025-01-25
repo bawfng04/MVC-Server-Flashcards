@@ -3,8 +3,8 @@
 This is a simple Node.js server using the MVC (Model-View-Controller) architecture.
 
 ## Screenshots
-![screenshot](flashcards.png)
-![screenshot](animals.png)
+![screenshot](./images/flashcards.png)
+![screenshot](./images/animals.png)
 
 ## Prerequisites
 
@@ -46,7 +46,7 @@ To start the server, run:
 
 The server will be running on `http://localhost:5000`
 
-Open this URL on browser after run the server: `localhost:5500/flashcards.html` and `localhost:5500/animals.html`
+The content will be displayed in `webContent/flashcards.html` and `webContent/animals.html` page.
 
 ## API Endpoints
 
