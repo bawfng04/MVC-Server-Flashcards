@@ -45,7 +45,7 @@ To start the server, run:
 
 The server will be running on `http://localhost:5000`.
 
-Open this URL on browser after run the server: `http://127.0.0.1:5500/flashcards.html` and `http://127.0.0.1:5500/animals.html`
+Open this URL on browser after run the server: `localhost:5500/flashcards.html` and `localhost:5500/animals.html`
 
 ## API Endpoints
 
