@@ -45,7 +45,7 @@ To start the server, run:
 
 The server will be running on `http://localhost:5000`.
 
-Open this URL on browser after run the server: `http://127.0.0.1:5500/index.html`.
+Open this URL on browser after run the server: `http://127.0.0.1:5500/flashcards.html` and `http://127.0.0.1:5500/animals.html`
 
 ## API Endpoints
 
@@ -83,6 +83,13 @@ Open this URL on browser after run the server: `http://127.0.0.1:5500/index.html
 - Get a flashcard by ID:
     ```
     GET /flashcards/:id
+    ```
+
+### Animals
+
+- Get all animals:
+    ```
+    GET /animals
     ```
 
 ## Frontend
