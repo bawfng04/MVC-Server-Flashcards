@@ -3,7 +3,8 @@
 This is a simple Node.js server using the MVC (Model-View-Controller) architecture.
 
 ## Screenshot
-![screenshot](image-1.png)
+![screenshot](flashcards.png)
+![screenshot](animals.png)
 
 ## Prerequisites
 
@@ -34,7 +35,7 @@ This is a simple Node.js server using the MVC (Model-View-Controller) architectu
 ## Database Setup
 
 1. Create the database tables:
-    - Use the SQL script in [createTables.SQL](http://_vscodecontentref_/2) to create the necessary tables and insert sample data.
+    - Use the SQL script in [./database/Animals.SQL] and [./database/Flashcards.SQL] to create the necessary tables and insert sample data.
 
 ## Running the Server
 
@@ -43,7 +44,7 @@ To start the server, run:
     npm start
     ```
 
-The server will be running on `http://localhost:5000`.
+The server will be running on `http://localhost:5000`
 
 Open this URL on browser after run the server: `localhost:5500/flashcards.html` and `localhost:5500/animals.html`
 
@@ -94,4 +95,4 @@ Open this URL on browser after run the server: `localhost:5500/flashcards.html` 
 
 ## Frontend
 
-The frontend is a simple HTML page that displays flashcards. Open [index.html](http://_vscodecontentref_/3) in your browser to view it.
+The frontend is simple HTML pages that displays content. Open `localhost:5500/flashcards.html` and `localhost:5500/animals.html` in your browser to view it.
