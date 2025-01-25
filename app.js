@@ -5,12 +5,14 @@ const port = process.env.PORT || 5000;
 const answerRoutes = require("./routes/answerRoute");
 const questionRoutes = require("./routes/questionRoute");
 const flashcardRoute = require("./routes/flashcardRoute");
+const animalRoutes = require("./routes/animalRoute");
 
 app.use(cors());
 app.use(express.json());
 app.use("/", answerRoutes);
 app.use("/", questionRoutes);
 app.use("/", flashcardRoute);
+app.use("/", animalRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Flashcard Server API");
@@ -27,7 +29,9 @@ app.listen(port, () => {
   console.log(`${domain}/answers/{id}`);
   console.log(`${domain}/flashcards`);
   console.log(`${domain}/flashcards/{id}`);
-  console.log("http://127.0.0.1:5500/index.html");
+  console.log(`${domain}/animals`);
+  console.log("http://127.0.0.1:5500/flashcards.html");
+  console.log("http://127.0.0.1:5500/animals.html");
 });
 
 const { poolPromise } = require("./database/database");

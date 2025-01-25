@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Facts</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --background-color: #ecf0f1;
+            --card-color: #ffffff;
+            --text-color: #2c3e50;
+            --critically-endangered-color: #e73c3c;
+            --danger-color: #e7c83c;
+            --success-color: #3ce794;
+            --warning-color: #a8e73c;
+
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 2.5em;
+            margin-bottom: 1em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .search-container {
+            margin-bottom: 2em;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1em;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 5px 20px rgba(52,152,219,0.2);
+        }
+
+        .filters {
+            display: flex;
+            gap: 1em;
+            margin-bottom: 2em;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            background: var(--card-color);
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .filter-btn.active {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .animals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2em;
+        }
+
+        .animal-card {
+            background: var(--card-color);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .animal-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .animal-image {
+            width: 100%;
+            height: 200px;
+            border-radius: 15px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        .animal-name {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .animal-info {
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
+
+        .conservation-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .status-Endangered {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .status-Vulnerable {
+            background-color: var(--warning-color);
+            color: var(--text-color);
+        }
+
+        .status-Least-Concern {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .status-Critically-Endangered{
+            background-color: var(--critically-endangered-color);
+            color: white;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .animals-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Discover Amazing Animals</h1>
+
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Search animals..." id="searchInput">
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" data-status="all">All</button>
+            <button class="filter-btn" data-status="Critically Endangered">Critically Endangered</button>
+            <button class="filter-btn" data-status="Endangered">Endangered</button>
+            <button class="filter-btn" data-status="Vulnerable">Vulnerable</button>
+            <button class="filter-btn" data-status="Least Concern">Least Concern</button>
+        </div>
+
+        <div class="animals-grid" id="animalsGrid"></div>
+    </div>
+
+    <script>
+        const defaultAnimalImage = "./database/defaultAnimal.png";
+        let allAnimals = [];
+        const APIEndpoint = 'http://localhost:5000';
+
+        async function fetchAnimals() {
+            try {
+                const response = await fetch(`${APIEndpoint}/animals`);
+                allAnimals = await response.json();
+                displayAnimals(allAnimals);
+            } catch (error) {
+                console.error('Error fetching animals:', error);
+            }
+        }
+
+        function displayAnimals(animals) {
+            const grid = document.getElementById('animalsGrid');
+            grid.innerHTML = '';
+
+            animals.forEach((animal, index) => {
+                const card = document.createElement('div');
+                card.className = 'animal-card';
+                card.style.animationDelay = `${index * 0.1}s`;
+
+                card.innerHTML = `
+                    <img src="${defaultAnimalImage }" alt="${animal.name}" class="animal-image">
+                    <h2 class="animal-name">${animal.name}</h2>
+                    <p class="animal-info"><strong>Habitat:</strong> ${animal.habitat}</p>
+                    <p class="animal-info"><strong>Diet:</strong> ${animal.diet}</p>
+                    <p class="animal-info"><strong>Lifespan:</strong> ${animal.lifespan}</p>
+                    <p class="animal-info">${animal.description}</p>
+                    <span class="conservation-status status-${animal.conservation_status.replace(/\s+/g, '-')}">
+                        ${animal.conservation_status}
+                    </span>
+                `;
+
+                // console.log(animal.conservation_status.replace(/\s+/g, '-'));
+
+                grid.appendChild(card);
+            });
+        }
+
+        function filterAnimals(status, searchTerm = '') {
+            let filtered = [...allAnimals];
+
+            if (status !== 'all') {
+                filtered = filtered.filter(animal =>
+                    animal.conservation_status === status
+                );
+            }
+
+            if (searchTerm) {
+                filtered = filtered.filter(animal =>
+                    animal.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    animal.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    animal.habitat.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
+
+            displayAnimals(filtered);
+        }
+
+        // Event Listeners
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const activeFilter = document.querySelector('.filter-btn.active').dataset.status;
+            filterAnimals(activeFilter, e.target.value);
+        });
+
+        document.querySelector('.filters').addEventListener('click', (e) => {
+            if (e.target.classList.contains('filter-btn')) {
+                document.querySelectorAll('.filter-btn').forEach(btn =>
+                    btn.classList.remove('active')
+                );
+                e.target.classList.add('active');
+                const searchTerm = document.getElementById('searchInput').value;
+                filterAnimals(e.target.dataset.status, searchTerm);
+            }
+        });
+
+        // Initial load
+        fetchAnimals();
+    </script>
+</body>
+</html>
