@@ -2,7 +2,7 @@
 
 This is a simple Node.js server using the MVC (Model-View-Controller) architecture.
 
-## Screenshot
+## Screenshots
 ![screenshot](flashcards.png)
 ![screenshot](animals.png)
 
@@ -35,7 +35,7 @@ This is a simple Node.js server using the MVC (Model-View-Controller) architectu
 ## Database Setup
 
 1. Create the database tables:
-    - Use the SQL script in [./database/Animals.SQL] and [./database/Flashcards.SQL] to create the necessary tables and insert sample data.
+    - Use the SQL script in `./database/Animals.SQL` and `./database/Flashcards.SQL` to create the necessary tables and insert sample data.
 
 ## Running the Server
 
